@@ -44,7 +44,7 @@ Here are api routes
 
 User register:
 ```
-/api/v1/register route
+/api/v1/register
 
 name: '',
 last_name: ',
@@ -54,7 +54,7 @@ password: '',
 
 Login need and get access token:
 ```
-/api/v1/login route
+/api/v1/login
 
 email: '',
 password: '',
@@ -77,12 +77,12 @@ name: ''
 
 Get chats:
 ```
-/api/v1/chats/get_chats
+/api/v1/chats/chats
 ```
 
 Send message:
 ```
-/api/v1/chats/send_message
+/api/v1/chats/messages/send
 
 body: ''
 chat_id: ''
@@ -90,5 +90,10 @@ chat_id: ''
 
 Get messages by chat:
 ```
-/api/v1/chats/get_messages/5
+/api/v1/chats/{chat_id}/messages
+```
+
+Run tests
+```sh
+./vendor/bin/sail artisan test
 ```

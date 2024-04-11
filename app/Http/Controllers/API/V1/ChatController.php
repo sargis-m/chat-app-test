@@ -10,6 +10,40 @@ use Illuminate\Http\Request;
 class ChatController extends Controller
 {
     /**
+     * Retrieves chats associated with the authenticated user, optimizes the data, and returns it in a JSON response.
+     *
+     * @param Request $request The HTTP request object
+     * @return \Illuminate\Http\JsonResponse The JSON response containing optimized chat data
+     */
+    public function index(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $user_id = auth()->id();
+
+        $chats = Chat::select('id', 'name', 'user1_id', 'user2_id', 'updated_at')
+            ->where('user1_id', $user_id)
+            ->orWhere('user2_id', $user_id)
+            ->orderByDesc('updated_at')
+            ->paginate(20);
+
+        $optimizedChats = $chats->map(function ($chat) use ($user_id) {
+            $partnerId = $chat->user1_id === $user_id ? $chat->user2_id : $chat->user1_id;
+
+            $partner = User::findOrFail($partnerId);
+
+            $chatTitle = $partner->name . ' ' . $partner->last_name;
+
+            return [
+                'chatId' => $chat->id,
+                'timestamp' => $chat->updated_at,
+                'participants' => [$user_id, $partnerId],
+                'chatTitle' => $chatTitle,
+            ];
+        });
+
+        return response()->json($optimizedChats);
+    }
+
+    /**
      * Create and returns a JSON response.
      *
      * @param Request $request description
@@ -47,39 +81,5 @@ class ChatController extends Controller
         }
 
         return response()->json($chat);
-    }
-
-    /**
-     * Retrieves chats associated with the authenticated user, optimizes the data, and returns it in a JSON response.
-     *
-     * @param Request $request The HTTP request object
-     * @return \Illuminate\Http\JsonResponse The JSON response containing optimized chat data
-     */
-    public function getChatsByUser(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $user_id = auth()->id();
-
-        $chats = Chat::select('id', 'name', 'user1_id', 'user2_id', 'updated_at')
-            ->where('user1_id', $user_id)
-            ->orWhere('user2_id', $user_id)
-            ->orderByDesc('updated_at')
-            ->paginate(20);
-
-        $optimizedChats = $chats->map(function ($chat) use ($user_id) {
-            $partnerId = $chat->user1_id === $user_id ? $chat->user2_id : $chat->user1_id;
-
-            $partner = User::findOrFail($partnerId);
-
-            $chatTitle = $partner->name . ' ' . $partner->last_name;
-
-            return [
-                'chatId' => $chat->id,
-                'timestamp' => $chat->updated_at,
-                'participants' => [$user_id, $partnerId],
-                'chatTitle' => $chatTitle,
-            ];
-        });
-
-        return response()->json($optimizedChats);
     }
 }

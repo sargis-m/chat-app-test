@@ -12,6 +12,18 @@ class UserController extends Controller
 {
 
     /**
+     * Retrieves users and returns a JSON response.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(): \Illuminate\Http\JsonResponse
+    {
+        $users = User::select('id as userId', 'email', 'name as firstName', 'last_name as lastName')
+            ->paginate(20);
+        return response()->json($users);
+    }
+
+    /**
      * Register and returns a JSON response.
      *
      * @param Request $request description
@@ -55,17 +67,5 @@ class UserController extends Controller
         } else {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    }
-
-    /**
-     * Retrieves users and returns a JSON response.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getUsers(): \Illuminate\Http\JsonResponse
-    {
-        $users = User::select('id as userId', 'email', 'name as firstName', 'last_name as lastName')
-            ->paginate(20);
-        return response()->json($users);
     }
 }
