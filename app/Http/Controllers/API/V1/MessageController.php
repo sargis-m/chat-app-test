@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use App\Http\Requests\MessageRequest;
 
 class MessageController extends Controller
 {
@@ -47,17 +48,12 @@ class MessageController extends Controller
     /**
      * Send a JSON response after validating the request and creating a new message for the chat.
      *
-     * @param Request $request The request object
+     * @param MessageRequest $request The request object
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      * @return \Illuminate\Http\JsonResponse
      */
-    public function send(Request $request): \Illuminate\Http\JsonResponse
+    public function send(MessageRequest $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'body' => 'required|string',
-            'chat_id' => 'required|exists:chats,id',
-        ]);
-
         $userId = auth()->id();
         $chatId = $request->chat_id;
 

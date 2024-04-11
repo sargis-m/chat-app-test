@@ -4,7 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -26,17 +27,12 @@ class UserController extends Controller
     /**
      * Register and returns a JSON response.
      *
-     * @param Request $request description
+     * @param UserRegisterRequest $request description
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request): \Illuminate\Http\JsonResponse
+    public function register(UserRegisterRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validatedData = $request->validate([
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'name' => 'required',
-            'last_name' => 'required',
-        ]);
+        $validatedData = $request->validated();
 
         User::create([
             'email' => $validatedData['email'],
@@ -51,15 +47,12 @@ class UserController extends Controller
     /**
      * Login and returns a JSON response.
      *
-     * @param Request $request description
+     * @param UserLoginRequest $request description
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request): \Illuminate\Http\JsonResponse
+    public function login(UserLoginRequest $request): \Illuminate\Http\JsonResponse
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $accessToken = Auth::user()->createToken('authToken')->plainTextToken;

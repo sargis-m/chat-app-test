@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\ChatRequest;
 
 class ChatController extends Controller
 {
@@ -46,16 +47,11 @@ class ChatController extends Controller
     /**
      * Create and returns a JSON response.
      *
-     * @param Request $request description
+     * @param ChatRequest $request description
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request): \Illuminate\Http\JsonResponse
+    public function create(ChatRequest $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'name' => 'required',
-            'user_id' => 'required|exists:users,id',
-        ]);
-
         $user1_id = auth()->id();
         $user2_id = $request->user_id;
         $name = $request->name;
