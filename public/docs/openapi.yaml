@@ -5,6 +5,131 @@ info:
   version: 1.0.0
 servers:
   -
-    url: 'http://localhost'
-paths: []
-tags: []
+    url: 'http://0.0.0.0:8081'
+paths:
+  /api/v1/register:
+    post:
+      summary: 'Register and returns a JSON response.'
+      operationId: registerAndReturnsAJSONResponse
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: doreilly@example.org
+                password:
+                  type: string
+                  description: 'Must be at least 6 characters.'
+                  example: 'g\!c[zN'
+                name:
+                  type: string
+                  description: ''
+                  example: et
+                last_name:
+                  type: string
+                  description: ''
+                  example: eaque
+              required:
+                - email
+                - password
+                - name
+                - last_name
+      security: []
+  /api/v1/login:
+    post:
+      summary: 'Login and returns a JSON response.'
+      operationId: loginAndReturnsAJSONResponse
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: spencer.will@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: est
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/chats/create:
+    post:
+      summary: 'Create and returns a JSON response.'
+      operationId: createAndReturnsAJSONResponse
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: repellendus
+                user_id:
+                  type: string
+                  description: ''
+                  example: voluptates
+              required:
+                - name
+                - user_id
+      security: []
+  /api/v1/chats/send_message:
+    post:
+      summary: 'A description of the entire PHP function.'
+      operationId: aDescriptionOfTheEntirePHPFunction
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: ''
+                  example: tempore
+                chat_id:
+                  type: string
+                  description: ''
+                  example: ea
+              required:
+                - body
+                - chat_id
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''
