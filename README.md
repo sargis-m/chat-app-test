@@ -1,6 +1,8 @@
 Laravel 11
 PHP 8.3
 
+If there is no docker-compose installed in system, need to install it before running project
+
 Steps how to run project
 
 Make .env file and add your database credentials
